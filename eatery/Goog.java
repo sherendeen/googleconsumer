@@ -26,42 +26,81 @@ public class Goog {
 	
 	
 	public static void main(String[] args) throws Exception {
+		getUserInput();
 		
+		ArrayList<String> results = createPipeFormatedList(placesToLookFor);
+		
+		// fix formating
+		results = fixPipesByDestroyingParentheses(results);
+		
+		writeResultsToFile(results);
+		
+		
+	}
+	
+	private static void getUserInput() {
+		// Get user input
 		Scanner scn = new Scanner(System.in);
-		
-		System.out.println("1. Input file path\nAnything else for a hard-coded path");
+		System.out.println("Select your option from the menu (Input a number)");
+		System.out.println("1. Input file path");
+		System.out.println("2. Read from hardcoded path");
+		System.out.println("3. Formatting help");
 		int opt = scn.nextInt();
-		if (opt==1) {
-			
+		
+		switch(opt) {
+		case 1:
 			System.out.println("Input file path:");
-			String inputPath = scn.nextLine();
-			placesToLookFor = getFileContent(inputPath);
 			
-		} else {
-		
+//			Scanner scn2 = new Scanner(System.in);
+			String inputPath = "";
+//			inputPath = scn2.nextLine();
+			Scanner in = new Scanner(System.in);
+	        inputPath = in.nextLine();
+			placesToLookFor = getFileContent(inputPath);
+			in.close();
+			break;
+		case 2:
+			// Attempt to read file at hard-coded path
+			System.out.println("Attempting to read hard-coded path...");
 			placesToLookFor = getFileContent(FILE_PATH);
-		
+			break;
+		case 3:
+			System.out.println("The formatted file should be a txt file that has each separate query on a separate line.");
+			System.out.println("Replace spaces with plus signs.");
+		default: 
+			System.out.println("Exiting...");
+			//scn.close();
+			System.exit(0);
 		}
 		
+		//close the scanner so as to prevent memory hogging.
+		scn.close();
+	}
+
+	private static ArrayList<String> createPipeFormatedList(String[] placesToLookFor) throws IOException {
 		ArrayList<String> results = new ArrayList<String>();
-		
 		for (String s : placesToLookFor){
 			//System.out.println(s + "|" + getResult(s)); 
 			results.add(s+"|"+getResult(s));
 		}
-		
-		// fix formating
-		for(int i = 0; i < results.size(); i++)
+		return results;
+	}
+
+	private static ArrayList<String> fixPipesByDestroyingParentheses(ArrayList<String> list) {
+		for(int i = 0; i < list.size(); i++)
 		{
-			//results.get(i);
-			
-			results.get(i).replace(") ", "-");
-			results.get(i).replace('(', '|');
-			System.out.println(results.get(i));
+			if (list.get(i).contains("(")) {
+				System.out.println("Found one. Index:" + i);
+				var symb = list.get(i);
+				int indexParen1 = symb.indexOf('(');
+				int indexParen2 = symb.indexOf(')');
+				StringBuilder sb = new StringBuilder(symb );
+				sb.replace(indexParen1,indexParen1+1, "|");
+				sb.replace(indexParen2, indexParen2+1, "");
+				list.set(i,sb.toString());// = (sb.toString());
+			}
 		}
-		
-		writeResultsToFile(results);
-		
+		return list;
 	}
 	
 	private static void writeResultsToFile(ArrayList<String> results) throws FileNotFoundException, UnsupportedEncodingException {
@@ -78,7 +117,9 @@ public class Goog {
 		
 		File file = new File(filePath);
 		
+		System.out.println("Attempting to read list file...");
 		try {
+			
 			Scanner scanner = new Scanner(file);
 			
 			while(scanner.hasNextLine()) {
@@ -110,9 +151,6 @@ public class Goog {
 		//for ( Element e : doc.select("h3.r a")) {
 		for ( Element e : doc.select(".LrzXr")) {
 			final String title = e.text();
-			
-			
-			
 			result += title + " ";
 		}
 		
