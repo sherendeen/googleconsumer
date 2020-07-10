@@ -4,7 +4,7 @@ public enum GField {
 	NAME(".kno-ecr-pt"),
 	TELEPHONE_NUMBER(".zdqRlf"),
 	STREET_ADDRESS(".i4J0ge"),
-	RATING(".EBe2gf"),
+	RATING(".Aq14fc"),//..EBe2gf
 	HOURS_TABLE(".WgFkxc");
 
 	private String cssSelector;

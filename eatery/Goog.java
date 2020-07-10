@@ -22,8 +22,8 @@ public class Goog {
 	
 	
 	public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0 ";
-	public static final String INPUT_FILES_DRIECTORY_PATH = "C:\\Users\\Seth\\eclipse-workspace\\googlconsumer\\input";
-	public static final String OUTPUT_FILE_PATH = "C:\\Users\\Seth\\eclipse-workspace\\googlconsumer\\output\\output.txt";
+	public static final String INPUT_FILES_DRIECTORY_PATH = "C:\\Users\\sgrh\\Documents\\googleconsumer-master\\input";
+	public static final String OUTPUT_FILE_PATH = "C:\\Users\\sgrh\\Documents\\googleconsumer-master\\output\\output.txt";
 	
 	public static void main(String[] args) throws Exception {
 		getUserInput();
@@ -42,28 +42,35 @@ public class Goog {
 		// Get user input
 		Scanner scn = new Scanner(System.in);
 		System.out.println("Select your option from the menu (Input a number)");
-		System.out.println("1. Input file path");
+		System.out.println("1. Input search queries file path");
 		System.out.println("2. Read from hardcoded path");
 		System.out.println("3. Formatting help");
 		int opt = scn.nextInt();
 		
+		ArrayList<String> filePaths = null;
+		
 		switch(opt) {
 		case 1:
-			System.out.println("Input file path:");
+			System.out.println("Input location of file:");
 			
 //			Scanner scn2 = new Scanner(System.in);
 			String inputPath = "";
 //			inputPath = scn2.nextLine();
 			Scanner in = new Scanner(System.in);
 	        inputPath = in.nextLine();
-			placesToLookFor = getQueriesFromFile(inputPath);
+	        
+	        filePaths = getFilePathsFromFolder(new File(inputPath));
+			
+	        for (String s : filePaths) {
+				placesToLookFor = getQueriesFromFile(s);		
+			}
 			in.close();
 			break;
 		case 2:
 			// Attempt to read file at hard-coded path
 			System.out.println("Attempting to read hard-coded path...");
 			
-			ArrayList<String> filePaths = getFilePathsFromFolder(new File(INPUT_FILES_DRIECTORY_PATH));
+			filePaths = getFilePathsFromFolder(new File(INPUT_FILES_DRIECTORY_PATH));
 			for (String s : filePaths) {
 				placesToLookFor = getQueriesFromFile(s);		
 			}
