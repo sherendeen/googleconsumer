@@ -22,8 +22,8 @@ public class Goog {
 	
 	
 	public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0 ";
-	public static final String INPUT_FILES_DRIECTORY_PATH = "C:\\Users\\sgrh\\Documents\\googleconsumer-master\\input";
-	public static final String OUTPUT_FILE_PATH = "C:\\Users\\sgrh\\Documents\\googleconsumer-master\\output\\output.txt";
+	public static final String INPUT_FILES_DRIECTORY_PATH = System.getProperty("user.dir")+"\\input";
+	public static final String OUTPUT_FILE_PATH = System.getProperty("user.dir") + "\\output\\output.txt";
 	
 	public static void main(String[] args) throws Exception {
 		getUserInput();
@@ -119,6 +119,9 @@ public class Goog {
 	}
 
 	private static ArrayList<String> fixPipesByDestroyingParentheses(ArrayList<String> list) {
+		
+		System.out.println("Attempting to remove parentheses...");
+		
 		for(int i = 0; i < list.size(); i++)
 		{
 			if (list.get(i).contains("(")) {
